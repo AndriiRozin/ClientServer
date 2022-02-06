@@ -7,14 +7,14 @@ ExTcpClient::ExTcpClient(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    m_labSocket = new QLabel("Гнездо Статус:");
+    m_labSocket = new QLabel("Статус подключения:");
     m_labSocket->setMidLineWidth(150);
     ui->statusBar->addWidget(m_labSocket);
 
     m_tcpSocket = new QTcpSocket(this);
 
     QString localIp = getLocalIp();
-    this->setWindowTitle(windowTitle() + "---- Эта машина IP:" + localIp);
+    this->setWindowTitle(windowTitle() + "---- IP этой машины:" + localIp);
     ui->comboBox->addItem(localIp);
 
     connect(m_tcpSocket, SIGNAL(connected()), this, SLOT(onConnected()));
@@ -55,15 +55,15 @@ void ExTcpClient::closeEvent(QCloseEvent *event)
 
 void ExTcpClient::onConnected()
 {
-    ui->plainTextEdit->appendPlainText("Это было связано с сервером \n втулке соединителя клиента \n парного (Peer) адрес:" + m_tcpSocket->peerAddress().toString()
-                                       + " порт (Peer): " +  QString::number(m_tcpSocket->peerPort()));
+    ui->plainTextEdit->appendPlainText("Связь с сервером установлена. Адрес:" + m_tcpSocket->peerAddress().toString()
+                                       + " порт: " +  QString::number(m_tcpSocket->peerPort()));
     ui->actConnect->setEnabled(false);
     ui->actDisconnect->setEnabled(true);
 }
 
 void ExTcpClient::onDisconnected()
 {
-    ui->plainTextEdit->appendPlainText("Подключение к серверу отсоединен \n");
+    ui->plainTextEdit->appendPlainText("Подключение с сервером разорвано \n");
     ui->actConnect->setEnabled(true);
     ui->actDisconnect->setEnabled(false);
 }
@@ -79,28 +79,28 @@ void ExTcpClient::onSocketStateChange(QAbstractSocket::SocketState socketState)
 {
     switch (socketState) {
     case QAbstractSocket::UnconnectedState:
-        m_labSocket->setText("Гнездо Статус: UnconnectedState");
+        m_labSocket->setText("Статус подключения: UnconnectedState");
         break;
     case QAbstractSocket::HostLookupState:
-        m_labSocket->setText("Гнездо Статус: HostLookupState");
+        m_labSocket->setText("Статус подключения: HostLookupState");
         break;
     case QAbstractSocket::ConnectingState:
-        m_labSocket->setText("Гнездо Статус: ConnectingState");
+        m_labSocket->setText("Статус подключения: ConnectingState");
         break;
     case QAbstractSocket::ConnectedState:
-        m_labSocket->setText("Гнездо Статус: ConnectedState");
+        m_labSocket->setText("Статус подключения: ConnectedState");
         break;
     case QAbstractSocket::BoundState:
-        m_labSocket->setText("Гнездо Статус: BoundState");
+        m_labSocket->setText("Статус подключения: BoundState");
         break;
     case QAbstractSocket::ClosingState:
-        m_labSocket->setText("Гнездо Статус: ClosingState");
+        m_labSocket->setText("Статус подключения: ClosingState");
         break;
     case QAbstractSocket::ListeningState:
-        m_labSocket->setText("Гнездо Статус: ListeningState");
+        m_labSocket->setText("Статус подключения: ListeningState");
         break;
     default:
-        m_labSocket->setText("Гнездо Статус: Другое Неизвестное состояние ...");
+        m_labSocket->setText("Статус подключения: Другое Неизвестное состояние ...");
         break;
     }
 }
